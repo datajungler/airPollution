@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/justified-nav/justified-nav.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://jquery-csv.googlecode.com/git/src/jquery.csv.js"></script>
+    <script src="https://s3-ap-southeast-1.amazonaws.com/airpollution/utility.js"></script>
+    <script>
+        function createCORSRequest(method, url){
+            var xhr = new XMLHttpRequest();
+            if ("withCredentials" in xhr){
+                xhr.open(method, url, true);
+            } else if (typeof XDomainRequest != "undefined"){
+                xhr = new XDomainRequest();
+                xhr.open(method, url);
+            } else {
+                xhr = null;
+            }
+            return xhr;
+        }
+
+        var request = createCORSRequest("get", "http://60.248.47.246/demo/crossDomain/cross.php");
+        if (request){
+            request.onload = function(){
+                alert(request.responseText);
+            };
+            request.send();
+        }
+    </script>
+
+    <script>        
+    	$(document).ready(function(){
+            initHourly();
+		});
+    	
+    </script>
+    <style>
+        .axis path {
+            fill: none;
+            stroke: #777;
+            shape-rendering: crispEdges;
+        }
+        .axis text {
+            font-family: Lato;
+            font-size: 13px;
+        }
+        .oval { 
+            width: 70px; height: 35px;
+            background: #FFFFFF;
+            -moz-border-radius: 100px / 50px; 
+            -webkit-border-radius: 100px / 50px; 
+            border-radius: 100px / 50px; 
+        }
+        .hightlightOval { 
+            width: 70px; height: 35px;
+            background: #F8FF57;
+            -moz-border-radius: 100px / 50px; 
+            -webkit-border-radius: 100px / 50px; 
+            border-radius: 100px / 50px; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <button onclick="window.location.href='./weekday.html'">See Weekday Result</button>
+        <div class="jumbotron">
+        	<svg id="region" width="200" height="200"></svg>
+            <button class="oval" id="y2011" onclick="changeButtonColor('y2011');currentColumn='y2011';getNewHourly()">2011</button>
+            <button class="oval" id="y2012" onclick="changeButtonColor('y2012');currentColumn='y2012';getNewHourly();">2012</button>
+            <button class="oval" id="y2013" onclick="changeButtonColor('y2013');currentColumn='y2013';getNewHourly();">2013</button>
+            <button class="oval" id="y2014" onclick="changeButtonColor('y2014');currentColumn='y2014';getNewHourly();">2014</button>
+            <button class="oval" id="y2015" onclick="changeButtonColor('y2015');currentColumn='y2015';getNewHourly();">2015</button>
+            <button class="hightlightOval" id="SO2" onclick="changeButtonColor('SO2');currentColumn='SO2';getNewHourly();">Overall</button>
+            <svg id="visualisation" width="1000" height="500"></svg>
+            <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+            <script>
+                var currentColumn="SO2"
+                var showArray = [0,0,1,0,0]
+                var regionName = ["Mongkok", "Tung Chung", "Central", "Yuen Long", "Tap Mun"]
+                var color = ["#FF8787","#FFE2A1", "#B0F7FF", "#B0FFB3", "#F0B2FF"]
+                var heightColor = ["#FF3737","#EBAE29","#30D7E9", "#44E94A", "#DA56FB"]
+                
+                var WIDTH = 1000,
+                    HEIGHT = 300,
+                    MARGINS = {
+                    top: 20,
+                    right: 20,
+                    bottom: 20,
+                    left: 50
+                };
+		    	
+                regionHourlyController();
+                
+            </script>
+        </div>
+    </div>
+</body>
+</html>
